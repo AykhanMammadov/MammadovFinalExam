@@ -115,3 +115,15 @@ The final result is shown below:
 ## Conclusion
 
 ChatGPT was used as a generative AI tool to edit the original picture and add a Wisent. The process involved uploading the original image, giving a clear text instruction, generating the edited image, saving the result, and inserting it into the `answer.md` file using standard Markdown image syntax.
+
+
+
+
+
+
+
+# Task 4
+
+The GPA calculator web application is located in:
+
+[gpa/index.html](gpa/index.html)
