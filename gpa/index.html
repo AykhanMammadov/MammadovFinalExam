@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GPA Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f6f8;
+            color: #222;
+        }
+
+        h1, h2, h3 {
+            color: #1f3b57;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 1100px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.12);
+        }
+
+        .program-box {
+            background-color: #eaf3ff;
+            border-left: 5px solid #1f75cb;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            background: white;
+        }
+
+        th {
+            background-color: #1f3b57;
+            color: white;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 9px;
+            text-align: left;
+        }
+
+        td[contenteditable="true"] {
+            background-color: #fffde7;
+        }
+
+        .yes {
+            color: green;
+            font-weight: bold;
+        }
+
+        .no {
+            color: red;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #1f75cb;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #155a9c;
+        }
+
+        .result {
+            background-color: #eef8ee;
+            border-left: 5px solid green;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .description {
+            background-color: #fff7df;
+            border-left: 5px solid #e3a300;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .info-area {
+            margin: 15px 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .info-icon {
+            display: inline-block;
+            background-color: #1f75cb;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            width: 760px;
+            background-color: white;
+            color: #222;
+            border: 2px solid #1f75cb;
+            border-radius: 8px;
+            padding: 18px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.25);
+            top: 35px;
+            left: 0;
+            line-height: 1.5;
+        }
+
+        .info-area:hover .tooltip {
+            display: block;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        .formula {
+            background: #f1f1f1;
+            padding: 8px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .small-note {
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Student GPA Calculator</h1>
+
+    <div class="program-box">
+        <strong>Current Academic Program:</strong> Electrical and Electronics Engineering
+    </div>
+
+    <h2>Information About GPA
+        <span class="info-area">
+            <span class="info-icon" onclick="toggleTooltip()">i</span>
+
+            <div class="tooltip" id="gpaTooltip">
+                <h3>Ilia State University GPA Calculation Rule</h3>
+
+                <p>
+                    At Ilia State University, GPA (Grade Point Average) is calculated
+                    using the Grade Point received in each course and the number of
+                    credits assigned to that course.
+                </p>
+
+                <p class="formula">
+                    GPA = Σ(each course GP × each course credit) / Σ(each course credits)
+                </p>
+
+                <h4>Grade Point Conversion</h4>
+
+                <table>
+                    <tr>
+                        <th>Score Range</th>
+                        <th>Letter Grade</th>
+                        <th>GP Value</th>
+                    </tr>
+                    <tr>
+                        <td>0 - 50</td>
+                        <td>F</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <td>51 - 60</td>
+                        <td>E</td>
+                        <td>1.00</td>
+                    </tr>
+                    <tr>
+                        <td>61 - 70</td>
+                        <td>D</td>
+                        <td>Increases by 1/12 for each point</td>
+                    </tr>
+                    <tr>
+                        <td>71 - 80</td>
+                        <td>C</td>
+                        <td>Continues increasing by 1/12 for each point</td>
+                    </tr>
+                    <tr>
+                        <td>81 - 90</td>
+                        <td>B</td>
+                        <td>Continues increasing by 1/12 for each point</td>
+                    </tr>
+                    <tr>
+                        <td>91 - 95</td>
+                        <td>A</td>
+                        <td>Continues increasing by 1/12 for each point</td>
+                    </tr>
+                    <tr>
+                        <td>96 - 100</td>
+                        <td>A+</td>
+                        <td>4.00</td>
+                    </tr>
+                </table>
+
+                <p>
+                    Final GPA is rounded to one decimal place according to the official rule.
+                </p>
+            </div>
+        </span>
+    </h2>
+
+    <p class="small-note">
+        Hover over or click the blue information icon to read the translated GPA rule.
+    </p>
+
+    <h2>Course List</h2>
+
+    <p class="small-note">
+        Yellow cells can be edited if a transcript value needs correction.
+    </p>
+
+    <table id="courseTable">
+        <tr>
+            <th>Course</th>
+            <th>Credit</th>
+            <th>Grade</th>
+            <th>Passed</th>
+        </tr>
+    </table>
+
+    <button onclick="calculateGPA()">Calculate</button>
+
+    <button onclick="calculateWithAI()">Calculate with Introduction to AI</button>
+
+    <div class="description">
+        <strong>Purpose of second button:</strong>
+        This button calculates GPA by assuming that the student's final score for
+        <strong>Introduction to AI</strong> equals the current accumulated points plus
+        <strong>30 final exam points</strong>.
+    </div>
+
+    <div id="result" class="result">
+        Result will appear here.
+    </div>
+
+</div>
+
+<script>
+    const courses = [
+        { course: "Physics", credit: 6, grade: 88, passed: "Yes" },
+        { course: "Modern Thought", credit: 6, grade: 85, passed: "Yes" },
+        { course: "Signals and Systems", credit: 6, grade: 82, passed: "Yes" },
+        { course: "Magnetic Waves", credit: 6, grade: 80, passed: "Yes" },
+        { course: "Linear Algebra", credit: 6, grade: 86, passed: "Yes" },
+        { course: "Statistics", credit: 6, grade: 84, passed: "Yes" },
+        { course: "Calculus", credit: 6, grade: 83, passed: "Yes" },
+        { course: "Digital Systems", credit: 6, grade: 87, passed: "Yes" },
+        { course: "Drones", credit: 6, grade: 90, passed: "Yes" },
+        { course: "Embedded Systems", credit: 6, grade: 89, passed: "Yes" },
+        { course: "Introduction to AI", credit: 6, grade: 40, passed: "No" },
+
+        { course: "Circuit Theory", credit: 6, grade: 100, passed: "Yes" },
+        { course: "Electronics", credit: 6, grade: 100, passed: "Yes" },
+        { course: "Control Systems", credit: 6, grade: 100, passed: "Yes" },
+        { course: "Power Systems", credit: 6, grade: 100, passed: "Yes" },
+        { course: "Microprocessors", credit: 6, grade: 100, passed: "Yes" }
+    ];
+
+    function loadCourses() {
+        const table = document.getElementById("courseTable");
+
+        courses.forEach((item) => {
+            let row = table.insertRow();
+
+            let courseCell = row.insertCell(0);
+            let creditCell = row.insertCell(1);
+            let gradeCell = row.insertCell(2);
+            let passedCell = row.insertCell(3);
+
+            courseCell.innerText = item.course;
+            creditCell.innerText = item.credit;
+            gradeCell.innerText = item.grade;
+            passedCell.innerText = item.passed;
+
+            courseCell.contentEditable = "true";
+            creditCell.contentEditable = "true";
+            gradeCell.contentEditable = "true";
+            passedCell.contentEditable = "true";
+
+            if (item.passed === "Yes") {
+                passedCell.className = "yes";
+            } else {
+                passedCell.className = "no";
+            }
+        });
+    }
+
+    function getTableData() {
+        const table = document.getElementById("courseTable");
+        const data = [];
+
+        for (let i = 1; i < table.rows.length; i++) {
+            const row = table.rows[i];
+
+            data.push({
+                course: row.cells[0].innerText.trim(),
+                credit: Number(row.cells[1].innerText.trim()),
+                grade: Number(row.cells[2].innerText.trim()),
+                passed: row.cells[3].innerText.trim()
+            });
+        }
+
+        return data;
+    }
+
+    function scoreToGP(score) {
+        score = Number(score);
+
+        if (isNaN(score)) {
+            return 0;
+        }
+
+        if (score <= 50) {
+            return 0.00;
+        }
+
+        if (score >= 51 && score <= 60) {
+            return 1.00;
+        }
+
+        if (score >= 61 && score <= 95) {
+            return 1 + ((score - 60) / 12);
+        }
+
+        if (score >= 96 && score <= 100) {
+            return 4.00;
+        }
+
+        if (score > 100) {
+            return 4.00;
+        }
+
+        return 0.00;
+    }
+
+    function calculateFromData(data) {
+        let totalWeightedPoints = 0;
+        let totalCredits = 0;
+
+        data.forEach((item) => {
+            if (isNaN(item.credit) || isNaN(item.grade)) {
+                return;
+            }
+
+            let gp = scoreToGP(item.grade);
+
+            totalWeightedPoints += gp * item.credit;
+            totalCredits += item.credit;
+        });
+
+        if (totalCredits === 0) {
+            return {
+                gpa: 0,
+                totalCredits: 0
+            };
+        }
+
+        let gpa = totalWeightedPoints / totalCredits;
+
+        return {
+            gpa: gpa,
+            officialGPA: Math.round(gpa * 10) / 10,
+            totalCredits: totalCredits
+        };
+    }
+
+    function calculateGPA() {
+        const data = getTableData();
+        const result = calculateFromData(data);
+
+        document.getElementById("result").innerHTML =
+            "<strong>Calculated GPA:</strong> " + result.officialGPA.toFixed(1) +
+            "<br><strong>Total Credits:</strong> " + result.totalCredits +
+            "<br><span class='small-note'>Final GPA is rounded to one decimal place.</span>";
+    }
+
+    function calculateWithAI() {
+        const data = getTableData();
+
+        data.forEach((item) => {
+            const lowerName = item.course.toLowerCase();
+
+            if (lowerName.includes("introduction to ai") || lowerName.includes("artificial intelligence")) {
+                item.grade = item.grade + 30;
+
+                if (item.grade > 100) {
+                    item.grade = 100;
+                }
+
+                if (item.grade >= 51) {
+                    item.passed = "Yes";
+                }
+            }
+        });
+
+        const result = calculateFromData(data);
+
+        document.getElementById("result").innerHTML =
+            "<strong>GPA with Introduction to AI final exam assumption:</strong> " + result.officialGPA.toFixed(1) +
+            "<br><strong>Total Credits:</strong> " + result.totalCredits +
+            "<br><strong>Assumption:</strong> Introduction to AI grade = current accumulated points + 30 final exam points." +
+            "<br><span class='small-note'>If the score becomes higher than 100, it is limited to 100.</span>";
+    }
+
+    function toggleTooltip() {
+        const tooltip = document.getElementById("gpaTooltip");
+        tooltip.classList.toggle("show");
+    }
+
+    loadCourses();
+</script>
+
+</body>
+</html>
