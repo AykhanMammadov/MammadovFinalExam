@@ -118,7 +118,9 @@ ChatGPT was used as a generative AI tool to edit the original picture and add a 
 
 
 
+# Task 3
 
+![](graph.png)
 
 
 
